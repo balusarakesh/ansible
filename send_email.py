@@ -28,25 +28,42 @@ def get_cpuutilization():
     for each in response['Datapoints']:
         percentages.append(float(each['Maximum']))
     return max(percentages)
+
+
+def get_memory():
+    data = os.popen("df -h").read()
+    lines = data.split("\n")
+    total = 0.0
+    for line in lines[1:]:
+        if line:
+            total = total + float(re.findall('[^\s]+', line)[4].replace('%', ''))
+    return total
+
+
 while True:
     client2 = boto3.client('ses', aws_secret_access_key='', aws_access_key_id='', region_name='us-east-1')
     percentage = get_cpuutilization()
+    memory = get_memory()
     if percentage > 95:
-        client2.send_email(Source='rakesh8015@gmail.com',
-            Destination={
-                'ToAddresses': [
-                    'rakesh4ru@gmail.com',
-                ]
+        message = 'Your CPUUtilization is ' + str(percentage)
+    elif memory > 90:
+        message = 'Your system memory usage is ' + str(memory) + '%'
+    client2.send_email(Source='rakesh8015@gmail.com',
+        Destination={
+            'ToAddresses': [
+                'rakesh4ru@gmail.com',
+            ]
+        },
+        Message={
+            'Subject': {
+                'Data': 'Hi from AWS'
             },
-            Message={
-                'Subject': {
-                    'Data': 'Hi from AWS'
-                },
-                'Body': {
-                    'Text': {
-                        'Data': 'Your CPUUtilization is ' + str(percentage)
-                    }
+            'Body': {
+                'Text': {
+                    'Data': str(message)
                 }
             }
-        )
+        }
+    )
+    
     time.sleep(5*1000*60)
