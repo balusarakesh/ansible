@@ -1,1 +1,12 @@
-# ansible
+steps to finish the task:
+ - Install Ansible on a local machine and also setup AWSCLI
+ - Create a security group for the ec2 instance using the playbook "create_ec2_sec_grp.yml"
+ - Launch an AWS EC2 instance using the playbook "create_ec2_instance.yml"
+ - Create a security group for the RDS instance which will be created in the next step
+ - Launch RDS instance using the playbook "create_postgress_db.yml"
+ - Add the EC2 instance to the ansible hosts in the local machine
+ - Next step is to install "Nginx, Python, pip, Flask and php modules" which can be done by using the playbook "ec2ops.yml"
+ - Once the "ec2ops.yml" playbook is run we will have a website running at the public ip address of the EC2 instance created
+ - Code for this website is in the "index.html" and "insert_query.php" files which are transfered to the instance as a part of the playbook "ec2ops.yml"
+ - Next step is to send an email using SES when the instance metrics like CPUUtilization increases by 95%, for which the code is in the "send_email.py"
+ - This code is executed for every 5 mins in the background using the nohup service and sends an email to "rakesh4ru@gmail.com" when the CPUUtilization is more than 95%.
