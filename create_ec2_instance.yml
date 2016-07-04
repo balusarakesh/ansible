@@ -1,0 +1,10 @@
+- hosts: localhost
+  tasks:
+  - name: Create EC2 instance
+    ec2:
+      image: ami-06116566
+      instance_type: t2.micro
+      private_ip: 172.31.11.152
+      key_name: home
+      region: us-west-1
+      group: second

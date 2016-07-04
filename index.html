@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+</head>
+    <body>
+<div>
+<br><br>
+Insert your details into database:<br>
+<br>
+name: &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="text" id="name" value="name" ><br>
+<br>
+email:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="email" id="email" value="email" ><br>
+<br>
+profession:
+<select id="profession" value="profession">
+  <option value="devops">DevOps Engineer</option>
+  <option value="software">Software Engineer</option>
+  <option value="qa">QA Engineer</option>
+</select>
+<br>
+<br>
+<input type="button" value="submit" onClick=send()>
+</div>
+  </body>
+</html>
+
+<script>
+function send()
+{
+name = document.getElementById("name").value;
+email = document.getElementById("email").value;
+profession = document.getElementById("profession").value;
+
+insert_into_db(name, email, profession);
+}
+
+function insert_into_db(name, email, profession)
+
+{
+
+        var ret;
+
+        $.ajax({
+            url: "insert_query.php",
+            data: {name:name,email:email,profession:profession},
+
+                        async:false,
+            type: "GET",
+            success: function (d) {
+                                        ret=d;
+            
+            },
+            error: function (xhr, status, error) {
+                if (xhr.status > 0) callback("error");
+          }
+        });
+        return ret;
+
+}
+</script>
+  </body>
+</html>
+
+

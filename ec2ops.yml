@@ -1,0 +1,29 @@
+- hosts: aws
+  tasks:
+  - name: python repo
+    apt_repository: repo='ppa:fkrull/deadsnakes' state=present
+  - apt: update_cache=yes
+  - name: install nginx
+    apt: name=nginx state=installed
+  - name: python setup-tools
+    raw: apt-get install python-setuptools -y
+  - name: install python
+    apt: name=python2.7 state=installed
+  - easy_install: name=pip state=latest
+  - name: install flask
+    pip: name=flask
+  - name: install php
+    apt: name={{ item }} state=installed
+    with_items:
+        - php5 
+        - libapache2-mod-php5
+        - php5-mcrypt
+        - php5-pgsql
+  - file: path=/etc/nginx/ssl state=directory
+  - name: Create SSL Certificates
+    command: openssl req -nodes -x509 -days 365 -subj "/C=US/ST=CA/L=San Jose/O=rakesh/CN=balusa" -newkey rsa:2048 -keyout /etc/nginx/ssl/nginx.key -out /etc/nginx/ssl/nginx.crt
+  - copy: src=/home/rakesh/Playbooks/default_from_server dest=/etc/nginx/sites-available/default
+  - copy: src=/home/rakesh/Playbooks/index.html dest=/usr/share/nginx/html/index.html
+  - copy: src=/home/rakesh/Playbooks/insert_query.php dest=/usr/share/nginx/html/insert_query.php
+  - name: nginx restart
+    service: name=nginx state=restarted

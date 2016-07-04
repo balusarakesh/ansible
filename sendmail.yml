@@ -1,0 +1,8 @@
+- hosts: aws
+  tasks:
+  - copy: src=/home/rakesh/Playbooks/send_email.py dest=/home/ubuntu/send_email.py
+  - name: install boto3
+    pip: name=boto3
+  - name: Run code to get CPU utilization
+    raw: 'nohup python /home/ubuntu/send_email.py > nohup_send_mail.log 2>&1 &'
+    

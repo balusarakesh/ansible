@@ -1,0 +1,16 @@
+- hosts: localhost
+  tasks:
+  - name: Create PostgresSQL DB in RDS
+    rds:
+      command: create
+      db_engine: postgres
+      instance_name: dbinstance1
+      db_name: dbname
+      size: 5
+      vpc_security_groups: sg-f924b89d
+      instance_type: db.t2.micro
+      password: password
+      publicly_accessible: yes
+      region: us-west-1
+      username: username
+    

@@ -1,0 +1,12 @@
+- hosts: control
+  tasks:
+  - name: Creating EC2 Security Group
+    ec2_group:
+      description: ec2secgroup
+      name: ec2group
+      region: us-west-1
+      rules:
+        - proto: tcp
+          from_port: 5432
+          to_port: 5432
+          cidr_ip: 55.55.55.55/32

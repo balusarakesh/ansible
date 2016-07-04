@@ -1,0 +1,13 @@
+- hosts: control
+  tasks:
+  - name: Creating EC2 Security Group
+    ec2_group:
+      description: rdssecgroup
+      name: rdsgroup
+      region: us-west-1
+      vpc_id: vpc-b1e3b5d4
+      rules:
+        - proto: tcp
+          from_port: 5432
+          to_port: 5432
+          cidr_ip: 55.55.55.55/32
